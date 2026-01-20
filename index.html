@@ -18,6 +18,16 @@
       --danger: #ef4444;
     }
     
+    :root.light-mode {
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F5F5F5;
+      --accent: #D4AF37;
+      --accent-dark: #FFD700;
+      --text-primary: #121212;
+      --text-secondary: #4A4A4A;
+      --danger: #ef4444;
+    }
+    
     * {
       box-sizing: border-box;
       margin: 0;
@@ -35,11 +45,10 @@
     
     .main {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       padding: 2rem;
-      max-width: 1400px;
-      margin: auto;
-      gap: 2rem;
+      gap: 4rem;
+      min-height: 100vh;
     }
     
     /* Sidebar Styles */
@@ -47,15 +56,21 @@
       background: var(--bg-secondary);
       border-radius: 16px;
       padding: 2.5rem 1.5rem;
-      flex: 1;
-      min-width: 280px;
+      width: 340px;
+      min-width: 340px;
       max-width: 340px;
       text-align: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      position: relative;
+      position: fixed;
+      top: 50%;
+      left: 2rem;
+      transform: translateY(-50%);
+      height: auto;
+      max-height: 90vh;
       overflow: hidden;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       border: 1px solid rgba(255, 215, 0, 0.1);
+      z-index: 100;
     }
     
     .sidebar::before {
@@ -71,7 +86,7 @@
     }
     
     .sidebar:hover {
-      transform: translateY(-5px);
+      transform: translateY(-50%) translateY(-5px);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     }
     
@@ -197,15 +212,18 @@
     
     /* Content Styles */
     .content {
-      flex: 3;
+      flex: 1;
       min-width: 300px;
+      margin-left: 340px;
+      max-width: calc(100% - 340px);
+      padding: 1rem 2rem 2rem 2rem;
     }
     
     .content section {
       background: var(--bg-secondary);
       border-radius: 16px;
       margin-bottom: 1.5rem;
-      padding: 2rem;
+      padding: 2.5rem;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative;
@@ -362,7 +380,10 @@
       padding: 2rem 1rem;
       color: var(--text-secondary);
       margin-top: 2rem;
+      margin-bottom: 0;
       font-size: 0.9rem;
+      width: 100%;
+      clear: both;
     }
     
     /* Animations */
@@ -391,16 +412,31 @@
       .main {
         flex-direction: column;
         padding: 1rem;
+        min-height: auto;
       }
       
       .sidebar {
+        position: static;
+        width: 100%;
         max-width: 100%;
-        margin-right: 0;
-        margin-bottom: 2rem;
+        min-width: 100%;
+        height: auto;
+        top: auto;
+        left: auto;
+        transform: none;
+      }
+      
+      .content {
+        margin-left: 0;
+        max-width: 100%;
       }
       
       .content section {
-        padding: 1.5rem;
+        padding: 2rem;
+      }
+      
+      .content {
+        padding: 1rem;
       }
     }
     
@@ -447,17 +483,23 @@
     
     /* Project cards */
     .project-card {
-      background: var(--bg-secondary);
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
+      background: transparent;
+      border-radius: 0;
+      padding: 1.5rem 0;
+      margin-bottom: 1.5rem;
       transition: all 0.3s ease;
-      border-left: 3px solid var(--accent);
+      border-left: none;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+      position: relative;
+    }
+    
+    .project-card:last-child {
+      border-bottom: none;
     }
     
     .project-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transform: translateX(5px);
+      border-bottom-color: rgba(255, 215, 0, 0.6);
     }
     
     .project-card h4 {
@@ -525,9 +567,332 @@
     .hidden {
       display: none;
     }
+
+    /* Enhanced Animations */
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.3), 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 12px 30px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    @keyframes borderGlow {
+      0%, 100% {
+        border-color: rgba(255, 215, 0, 0.3);
+      }
+      50% {
+        border-color: rgba(255, 215, 0, 0.8);
+      }
+    }
+
+    @keyframes pulseText {
+      0%, 100% {
+        color: var(--text-primary);
+      }
+      50% {
+        color: var(--accent);
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Apply enhanced animations */
+    .sidebar {
+      animation: slideInLeft 0.8s ease-out;
+    }
+
+    .content section {
+      animation: slideInRight 0.8s ease-out both !important;
+    }
+
+    .content section:nth-child(2) {
+      animation-delay: 0.1s !important;
+    }
+
+    .content section:nth-child(3) {
+      animation-delay: 0.2s !important;
+    }
+
+    .content section:nth-child(4) {
+      animation-delay: 0.3s !important;
+    }
+
+    .content section:nth-child(5) {
+      animation-delay: 0.4s !important;
+    }
+
+    .content section:nth-child(6) {
+      animation-delay: 0.5s !important;
+    }
+
+    .skill-tag {
+      animation: scaleIn 0.6s ease-out both;
+    }
+
+    .skill-tag:nth-child(1) { animation-delay: 0.05s; }
+    .skill-tag:nth-child(2) { animation-delay: 0.1s; }
+    .skill-tag:nth-child(3) { animation-delay: 0.15s; }
+    .skill-tag:nth-child(4) { animation-delay: 0.2s; }
+    .skill-tag:nth-child(5) { animation-delay: 0.25s; }
+    .skill-tag:nth-child(6) { animation-delay: 0.3s; }
+    .skill-tag:nth-child(7) { animation-delay: 0.35s; }
+    .skill-tag:nth-child(8) { animation-delay: 0.4s; }
+    .skill-tag:nth-child(9) { animation-delay: 0.45s; }
+    .skill-tag:nth-child(10) { animation-delay: 0.5s; }
+
+    .project-card {
+      animation: scaleIn 0.6s ease-out;
+    }
+
+    .project-card:nth-child(1) { animation-delay: 0.1s; }
+    .project-card:nth-child(2) { animation-delay: 0.2s; }
+    .project-card:nth-child(3) { animation-delay: 0.3s; }
+    .project-card:nth-child(4) { animation-delay: 0.4s; }
+    .project-card:nth-child(5) { animation-delay: 0.5s; }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    /* Enhanced skill tag animation */
+    .skill-tag {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-tag::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .skill-tag:hover::before {
+      left: 100%;
+    }
+
+    /* Enhanced section hover with glow */
+    .content section {
+      position: relative;
+    }
+
+    .content section:hover {
+      animation: glow 1s ease-in-out;
+    }
+
+    /* Enhanced project card */
+    .project-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .project-card:hover::before {
+      left: 100%;
+    }
+
+    .experience-item {
+      animation: slideInRight 0.6s ease-out;
+      position: relative;
+    }
+
+    .experience-item:nth-child(n) {
+      animation-delay: 0.1s;
+    }
+
+    .education-item {
+      animation: slideInRight 0.6s ease-out;
+      position: relative;
+    }
+
+    .education-item:nth-child(n) {
+      animation-delay: 0.1s;
+    }
+
+    footer {
+      animation: slideDown 0.8s ease-out;
+    }
+
+    /* Enhanced info items animation */
+    .info div {
+      animation: slideInLeft 0.6s ease-out both;
+    }
+
+    .info div:nth-child(1) { animation-delay: 0.2s; }
+    .info div:nth-child(2) { animation-delay: 0.3s; }
+    .info div:nth-child(3) { animation-delay: 0.4s; }
+    .info div:nth-child(4) { animation-delay: 0.5s; }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: var(--bg-secondary);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(15deg);
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    }
+
+    .theme-toggle i {
+      font-size: 1.4rem;
+      color: var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .theme-toggle:hover i {
+      transform: rotate(20deg);
+    }
+
+    /* Social Links Section */
+    .social-links {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .social-links p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .social-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 45px;
+      background: rgba(255, 215, 0, 0.1);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 50%;
+      color: var(--accent);
+      font-size: 1.3rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .social-icons a:hover {
+      background: var(--accent);
+      color: #000;
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+      }
+
+      .theme-toggle i {
+        font-size: 1.2rem;
+      }
+    }
   </style>
 </head>
 <body>
+
+<!-- Theme Toggle Button -->
+<div class="theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
+  <i class="fas fa-moon" id="theme-icon"></i>
+</div>
 
 <div class="main">
   <!-- Sidebar -->
@@ -549,13 +914,20 @@
           <i class="fas fa-map-marker-alt"></i>
           <span>Kathmandu, Nepal</span>
         </div>
-        <div>
-          <i class="fas fa-globe"></i>
-          <a href="http://www.aryan-neupane.com.np" target="_blank">aryan-neupane.com.np</a>
-        </div>
-        <div>
-          <i class="fab fa-github"></i>
-          <a href="https://github.com/aryan-np" target="_blank">github.com/aryan-np</a>
+      </div>
+      
+      <div class="social-links">
+        <p>Find me on:</p>
+        <div class="social-icons">
+          <a href="https://www.linkedin.com/in/aryan-neupane-15737b31a/" target="_blank" title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://github.com/aryan-np" target="_blank" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.instagram.com/_aryan.py_/" target="_blank" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
         </div>
       </div>
     </div>
@@ -577,14 +949,18 @@
       <h3>Experience</h3>
       <div class="experience-item">
         <div class="experience-header">
-          <h3>Backend Intern - Skill Museum and Research Center</h3>
-          <span class="duration">June 2024 – Present</span>
+          <h3>Intern - Backend Developer & Problem Solver</h3>
+          <span class="duration">2024 – Present</span>
         </div>
-        <h4 class="company">ingskill.com</h4>
+        <p class="company">Skill Museum and Research Center</p>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.8rem;">Building scalable backend systems and web applications</p>
         <div class="tech-stack">
+          <span>Python</span>
           <span>Django</span>
           <span>PostgreSQL</span>
-          <span>Django REST Framework</span>
+          <span>REST APIs</span>
+          <span>Postman</span>
+          <span>Swagger</span>
         </div>
       </div>
     </section>
@@ -593,15 +969,16 @@
       <h3>Skills & Tools</h3>
       <div class="skills-container">
         <span class="skill-tag">Python</span>
-        <span class="skill-tag">Django</span>
-        <span class="skill-tag">Django REST Framework</span>
-        <span class="skill-tag">PostgreSQL</span>
+        <span class="skill-tag">C</span>
         <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">Node.js</span>
+        <span class="skill-tag">Django</span>
         <span class="skill-tag">React</span>
-        <span class="skill-tag">HTML/CSS</span>
-        <span class="skill-tag">Git</span>
+        <span class="skill-tag">MongoDB</span>
+        <span class="skill-tag">PostgreSQL</span>
+        <span class="skill-tag">Git & GitHub</span>
         <span class="skill-tag">REST APIs</span>
-        <span class="skill-tag">Problem Solving</span>
+        <span class="skill-tag">HTML/CSS</span>
         <span class="skill-tag">Data Structures</span>
         <span class="skill-tag">Algorithms</span>
       </div>
@@ -701,6 +1078,38 @@
 <footer style="animation: fadeIn 0.6s ease-out 1.2s;">
   © 2025 Aryan Neupane | Crafted with <i class="fas fa-heart" style="color: var(--danger);"></i> and <i class="fas fa-code" style="color: var(--accent);"></i>
 </footer>
+
+<script>
+  // Theme toggle functionality
+  function toggleTheme() {
+    const root = document.documentElement;
+    const themeIcon = document.getElementById('theme-icon');
+    
+    if (root.classList.contains('light-mode')) {
+      root.classList.remove('light-mode');
+      themeIcon.classList.remove('fa-sun');
+      themeIcon.classList.add('fa-moon');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      root.classList.add('light-mode');
+      themeIcon.classList.remove('fa-moon');
+      themeIcon.classList.add('fa-sun');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+  
+  // Load saved theme on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    const themeIcon = document.getElementById('theme-icon');
+    
+    if (savedTheme === 'light') {
+      document.documentElement.classList.add('light-mode');
+      themeIcon.classList.remove('fa-moon');
+      themeIcon.classList.add('fa-sun');
+    }
+  });
+</script>
 
 </body>
 </html>
